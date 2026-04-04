@@ -256,7 +256,7 @@ cat ~/.ollama/logs/server.log | tail -20
 
 ## Contributing
 
-*Coming soon - guidelines for submitting model reviews and benchmarks.*
+Want to add a model, fix benchmarks or suggest a use case? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
