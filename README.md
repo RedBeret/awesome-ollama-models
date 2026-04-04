@@ -128,7 +128,57 @@ Subjective ratings from testing with coding, reasoning, general chat and creativ
 
 ## Use Cases
 
-*Coming soon - recommended models per task type.*
+### "I need to write code"
+
+**Best:** `minimax-m2.7:cloud` - top coding benchmarks, understands complex codebases, has thinking mode for harder problems.
+
+**Runner up:** `kimi-k2.5:cloud` - nearly as good at code with faster response times and bigger context window (256K).
+
+```bash
+ollama run minimax-m2.7:cloud "write a python script that monitors a directory for new files and logs changes"
+```
+
+### "I need to reason through something"
+
+**Best:** `gpt-oss:120b-cloud` - fastest response with strong reasoning. Great for math, logic and analysis.
+
+**Runner up:** `deepseek-v3.2:cloud` - excellent at chain-of-thought reasoning and complex problems.
+
+```bash
+ollama run gpt-oss:120b-cloud "explain why P vs NP matters in simple terms"
+```
+
+### "I need to chat or brainstorm"
+
+**Best:** `kimi-k2.5:cloud` - best all-around quality, handles long conversations well with 256K context.
+
+**Runner up:** `glm-5:cloud` - good conversational quality, slightly slower.
+
+```bash
+ollama run kimi-k2.5:cloud "help me brainstorm names for a developer tools startup"
+```
+
+### "I need to analyze an image"
+
+**Best:** `gemma4:cloud` - google's multimodal model, solid image understanding.
+
+**Runner up:** `qwen3-vl:cloud` - larger model, better at complex visual tasks.
+
+### "I need something fast and cheap"
+
+**Best:** `nemotron-3-nano:cloud` - 4B-30B params, extremely fast, supports up to 1M context.
+
+**Runner up:** `ministral-3:cloud` - multiple sizes (3B/8B/14B), good for quick tasks.
+
+```bash
+ollama run nemotron-3-nano:cloud "summarize this in one sentence: ..."
+```
+
+### "I need to process a huge document"
+
+**Best:** `kimi-k2.5:cloud` (256K context) or `nemotron-3-nano:cloud` (up to 1M context).
+
+Models with the largest context windows can handle entire codebases, long PDFs or book-length documents in a single prompt.
 
 ## Setup
 
