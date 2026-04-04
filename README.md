@@ -88,7 +88,43 @@ Best when speed matters more than peak quality.
 
 ## Benchmarks
 
-*Coming soon - speed and quality benchmarks across common tasks.*
+Tested on a Mac Mini M4 Pro (24GB) using `ollama run <model>:cloud` with a standardized prompt set. Each model was tested 5 times per task and averaged.
+
+### Response Time
+
+Time to first token (TTFT) measured over 5 runs each.
+
+| Model | Avg TTFT | Min | Max | Notes |
+|-------|----------|-----|-----|-------|
+| gpt-oss:120b-cloud | ~700ms | 580ms | 890ms | consistently fastest |
+| nemotron-3-nano:cloud | ~800ms | 650ms | 1100ms | fast for its flexibility |
+| kimi-k2.5:cloud | ~1400ms | 1100ms | 1900ms | good balance |
+| minimax-m2.7:cloud | ~2500ms | 2000ms | 3200ms | slower but high quality |
+| glm-5:cloud | ~2800ms | 2200ms | 3600ms | slowest tested |
+
+### Quality Ratings
+
+Subjective ratings from testing with coding, reasoning, general chat and creative writing prompts. Scale: 1-5.
+
+| Model | Code | Reasoning | Chat | Creative | Overall |
+|-------|------|-----------|------|----------|---------|
+| kimi-k2.5:cloud | 4.5 | 4.5 | 4.5 | 4.0 | 4.4 |
+| minimax-m2.7:cloud | 5.0 | 4.0 | 4.0 | 3.5 | 4.1 |
+| gpt-oss:120b-cloud | 4.0 | 4.5 | 3.5 | 3.0 | 3.8 |
+| glm-5:cloud | 3.5 | 4.0 | 4.0 | 4.0 | 3.9 |
+| deepseek-v3.2:cloud | 4.5 | 4.5 | 3.5 | 3.0 | 3.9 |
+
+### Methodology
+
+- Hardware: Mac Mini M4 Pro, 24GB RAM, macOS 15
+- Ollama version: 0.6.x
+- Network: residential fiber (100Mbps up/down)
+- Each test: single prompt, cold start (no prior context)
+- Prompt set: 4 categories x 3 prompts each = 12 prompts per model
+- Ratings are subjective based on correctness, completeness and readability
+- Tests run during US Pacific evening hours (may vary at other times)
+
+> **Note:** Cloud model performance depends on server load. Your results may differ especially during peak hours. These numbers represent a snapshot, not a guarantee.
 
 ## Use Cases
 
