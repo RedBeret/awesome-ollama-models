@@ -182,7 +182,73 @@ Models with the largest context windows can handle entire codebases, long PDFs o
 
 ## Setup
 
-*Coming soon - installation and quickstart guide.*
+### Install Ollama
+
+```bash
+# macOS
+brew install ollama
+
+# Linux
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Windows
+# Download from https://ollama.com/download
+```
+
+### Start the Ollama server
+
+```bash
+ollama serve
+```
+
+### Run a cloud model
+
+Add `:cloud` to any supported model name:
+
+```bash
+# interactive chat
+ollama run kimi-k2.5:cloud
+
+# single prompt
+ollama run gpt-oss:120b-cloud "what is the time complexity of mergesort"
+
+# with a file
+cat main.py | ollama run minimax-m2.7:cloud "review this code for bugs"
+```
+
+### Use the API
+
+Ollama exposes a local API on port 11434:
+
+```bash
+curl http://localhost:11434/api/generate -d '{
+  "model": "kimi-k2.5:cloud",
+  "prompt": "explain dependency injection",
+  "stream": false
+}'
+```
+
+Works with any OpenAI-compatible client too:
+
+```python
+from openai import OpenAI
+
+client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+response = client.chat.completions.create(
+    model="kimi-k2.5:cloud",
+    messages=[{"role": "user", "content": "hello"}]
+)
+print(response.choices[0].message.content)
+```
+
+### Verify cloud is working
+
+If a model runs on cloud GPUs you'll see much faster responses than local inference, especially for large models. Check the Ollama logs:
+
+```bash
+# macOS
+cat ~/.ollama/logs/server.log | tail -20
+```
 
 ## FAQ
 
