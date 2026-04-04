@@ -252,7 +252,41 @@ cat ~/.ollama/logs/server.log | tail -20
 
 ## FAQ
 
-*Coming soon.*
+### Is Ollama cloud really free?
+
+Yes. As of early 2026 all `:cloud` models are free to use. Ollama runs them on datacenter GPUs. No account needed.
+
+### Are there rate limits?
+
+Undocumented but observed limits are roughly 10-20 requests per minute per model. If you hit a 429 error, wait 30 seconds and retry. Different models have independent limits so you can spread requests across models.
+
+### Cloud vs local - when should I use which?
+
+Use cloud when:
+- You don't have a GPU (or your GPU is too small for the model)
+- You want to try a large model without downloading 50-100GB
+- You need fast responses and your internet is decent
+
+Use local when:
+- You need privacy (cloud requests go to Ollama servers)
+- You need consistent latency without depending on their infrastructure
+- You're doing high-volume work that might hit rate limits
+
+### Can I use cloud models with the Ollama API?
+
+Yes. The API works exactly the same. Just use the `:cloud` tag in the model name:
+
+```bash
+curl http://localhost:11434/api/generate -d '{"model":"kimi-k2.5:cloud","prompt":"hello"}'
+```
+
+### Which model should I start with?
+
+`kimi-k2.5:cloud` - best all-around quality, massive 256K context and good at everything from code to chat. If you need speed over quality, try `gpt-oss:120b-cloud`.
+
+### Do cloud models support tool calling?
+
+Most do. Check the capabilities column in the model tables above. Models with "tools" listed support function/tool calling through the Ollama API.
 
 ## Contributing
 
