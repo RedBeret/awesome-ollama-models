@@ -51,11 +51,10 @@ Ollama currently labels two cloud models as low usage. Medium-usage models can a
 | [`gpt-oss:20b-cloud`](https://ollama.com/library/gpt-oss) | Low | 128K | Text | Lightweight reasoning, coding and tool use |
 | [`nemotron-3-nano:30b-cloud`](https://ollama.com/library/nemotron-3-nano) | Low | 1M | Text | Efficient agent tasks and very long context |
 | [`gpt-oss:120b-cloud`](https://ollama.com/library/gpt-oss) | Medium | 128K | Text | Stronger reasoning and coding |
-| [`gemma4:cloud`](https://ollama.com/library/gemma4) | Medium | 256K | Text, image | Multimodal chat, coding and image analysis |
+| [`gemma4:cloud`](https://ollama.com/library/gemma4) | Low | 256K | Text, image | Multimodal chat, coding and image analysis |
 | [`qwen3.5:cloud`](https://ollama.com/library/qwen3.5) | Medium | 256K | Text, image | General, multilingual and multimodal work |
 | [`deepseek-v4-flash:cloud`](https://ollama.com/library/deepseek-v4-flash) | Medium | 1M | Text | Long context, reasoning and coding |
 | [`minimax-m2.7:cloud`](https://ollama.com/library/minimax-m2.7) | Medium | 200K | Text | Coding and agent workflows |
-| [`minimax-m2.5:cloud`](https://ollama.com/library/minimax-m2.5) | Medium | 198K | Text | Coding and productivity |
 | [`nemotron-3-super:cloud`](https://ollama.com/library/nemotron-3-super) | Medium | 256K | Text | Agentic and multilingual reasoning |
 
 > [!NOTE]
@@ -73,7 +72,7 @@ High and extra-high usage models are practical Pro or Max choices for repeated w
 | [`minimax-m3:cloud`](https://ollama.com/library/minimax-m3) | High | 512K | Text, image | Coding, agents and long multimodal context |
 | [`kimi-k2.7-code:cloud`](https://ollama.com/library/kimi-k2.7-code) | High | 256K | Text, image | Long-horizon coding and tool use |
 | [`kimi-k2.6:cloud`](https://ollama.com/library/kimi-k2.6) | High | 256K | Text, image | Coding, design and agent orchestration |
-| [`kimi-k2.5:cloud`](https://ollama.com/library/kimi-k2.5) | High | 256K | Text, image | General multimodal agent tasks |
+| [`kimi-k3:cloud`](https://ollama.com/library/kimi-k3) | Extra High | 1M | Text, image | Native multimodal agentic model for long-horizon coding, knowledge work, and reasoning |
 | [`nemotron-3-ultra:cloud`](https://ollama.com/library/nemotron-3-ultra) | High | 256K | Text | Long-running, high-throughput agents |
 | [`deepseek-v4-pro:cloud`](https://ollama.com/library/deepseek-v4-pro) | Extra high | 1M | Text | Frontier reasoning and difficult coding tasks |
 
@@ -119,6 +118,8 @@ Ollama occasionally retires cloud models. Retirement does not remove an independ
 | `qwen3-vl:235b-instruct-cloud` | June 16, 2026 | `qwen3.5:cloud` |
 | `cogito-2.1:671b-cloud` | June 16, 2026 | `deepseek-v4-flash:cloud` |
 | `rnj-1:8b-cloud` | June 30, 2026 | None listed |
+| `minimax-m2.5:cloud` | July 31, 2026 | `minimax-m2.7:cloud` |
+| `kimi-k2.5:cloud` | July 31, 2026 | `kimi-k2.6:cloud` |
 
 ### Scheduled for retirement July 15, 2026
 
