@@ -7,7 +7,7 @@ Reference date: **October 14, 2026** (America/Los_Angeles). Research used live o
 - Repository: [RedBeret/awesome-ollama-models](https://github.com/RedBeret/awesome-ollama-models); public; MIT.
 - Default branch: `init-project`, commit `ae051d28851e31cff88f31f698d2241a341e1aca`.
 - Read all four original files: `README.md` (13,100 bytes), `LICENSE`, `.gitignore`, `.whitesource`. Reviewed recent history, branches, repository metadata, rulesets and open PRs. No existing workflow files were present. Public ruleset listing returned none; repository metadata reported the branch unprotected. This does not establish every organization/Actions policy.
-- Other branches were `main` and `whitesource/configure`. Open [PR #10](https://github.com/RedBeret/awesome-ollama-models/pull/10), “Update retired models and attributes,” overlaps documentation and remains untouched; coordinate before merging either PR.
+- Other branches were `main` and `whitesource/configure`. At the audit baseline, [PR #10](https://github.com/RedBeret/awesome-ollama-models/pull/10), “Update retired models and attributes,” was open and overlapped the README. Its commit is now incorporated into the modernization's merge history, with the README overlap reconciled as described below.
 - Preserved MIT and `.whitesource` byte-for-byte. Preserved integration references, local/cloud examples, routing project and reliability guidance, with corrected tags and statements.
 
 ## Corrections
@@ -49,3 +49,7 @@ Cloud IDs and capability flags come from the live API. CLI/local tags, context a
 ## Limits of verification
 
 No paid inference, model download, hardware benchmarking or account-specific entitlement test was performed. Current source content cannot establish historical billing-change dates or reconfirm private retirement notices. The drift monitor intentionally does not detect changes to price, context, modality or terms. Review those manually. Local validation results and actual GitHub Actions status are reported in the delivery/PR, not presumed here.
+
+## PR integration
+
+PR #10's commit `f6835c2` corrects Gemma's relative usage band, adds Kimi K3, removes older MiniMax/Kimi cloud recommendations, and records proposed July 31 retirement dates. The modernization already captures Kimi K3 and the observed active identifier set, and uses published token prices rather than relative bands as plan entitlements. The README conflict is resolved in favor of the current generated catalog and sourced guidance. The historical retirement-date assertions remain in Git history; they are not promoted to independently verified current facts. Both PR histories are preserved without reverting the generated documentation or older pricing corrections.
