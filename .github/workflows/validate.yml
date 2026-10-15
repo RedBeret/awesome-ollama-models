@@ -1,0 +1,39 @@
+name: Validate catalog
+on:
+  pull_request:
+  push:
+    branches: [init-project, main, 'modernize-ollama-catalog-*']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.12', '3.13']
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Validate schema and generated docs
+        run: |
+          python scripts/catalog.py validate
+          python scripts/catalog.py generate --check
+      - name: Test catalog offline
+        run: python -m unittest discover -s tests -v
+      - name: Test issue maintenance offline
+        run: node --test tests/test_drift_issue.cjs
+      - name: Compile Python
+        run: python -m compileall -q scripts tests
+      - name: Check whitespace
+        run: git diff --check

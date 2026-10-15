@@ -1,285 +1,232 @@
 # awesome-ollama-models
 
-> Curated guide to Ollama local and cloud models, including plan limits, usage levels and model lifecycle status
+> A sourced guide to Ollama local and cloud models, with generated comparisons and cloud catalog drift monitoring.
 
 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Validate catalog](https://github.com/RedBeret/awesome-ollama-models/actions/workflows/validate.yml/badge.svg?branch=init-project)](https://github.com/RedBeret/awesome-ollama-models/actions/workflows/validate.yml)
 
-**Last verified:** July 12, 2026
-
-[Ollama](https://ollama.com) can run open models on your hardware or offload supported `:cloud` models to Ollama-managed infrastructure. Local execution does not consume Ollama Cloud usage. Cloud access is available through Free, Pro and Max plans.
-
-> [!IMPORTANT]
-> Ollama does not publish a stable model-by-model Free versus paid entitlement table. Model pages publish a relative cloud usage level instead. This guide separates official plan facts from practical model guidance so it does not present inferred access as a guarantee.
+**Research snapshot: October 14, 2026.** Covers all 18 direct cloud identifiers observed that day and two additional local examples. This is a point-in-time reference, not an exhaustive local library or an availability guarantee. [Full catalog and model prices](MODEL_CATALOG.md) · [Audit and source conflicts](AUDIT.md) · [Contributing](CONTRIBUTING.md) · [Lifecycle policy](docs/LIFECYCLE.md).
 
 ## Contents
 
-- [Cloud plans](#cloud-plans)
-- [Free versus paid guidance](#free-versus-paid-guidance)
-- [Current cloud models](#current-cloud-models)
+- [Getting started](#getting-started)
+- [Local versus cloud](#local-versus-cloud)
+- [Free versus paid](#free-versus-paid)
+- [Current models](#current-models)
 - [Quick decision guide](#quick-decision-guide)
-- [Deprecations](#deprecations)
-- [Setup](#setup)
-- [API access](#api-access)
+- [Engineering workflows](#engineering-workflows)
+- [API examples](#api-examples)
 - [Integrations](#integrations)
-- [Reliability guidance](#reliability-guidance)
-- [FAQ](#faq)
-- [Contributing](#contributing)
+- [Production reliability](#production-reliability)
+- [Maintaining the catalog](#maintaining-the-catalog)
 
-## Cloud plans
+## Getting started
 
-| Plan | Price | Concurrent cloud models | Included cloud usage | Official positioning |
-|---|---:|---:|---|---|
-| Free | $0 | 1 | Light | Chat, evaluation, coding and assistants with smaller models |
-| Pro | $20/month or $200/year | 3 | 50x Free | Larger models, coding automation and deep research |
-| Max | $100/month | 10 | 5x Pro | Sustained agents, concurrent workflows and extended large-model use |
+Install [Ollama](https://ollama.com/download) using its official installer. Open the app or run `ollama` and follow setup prompts. Choose a local model, or sign in for cloud access. On Linux, start `ollama serve` if the server is not already running. [Official quickstart](https://docs.ollama.com/quickstart).
 
-Ollama measures cloud usage primarily by GPU time rather than a fixed token or requests-per-minute allowance. Session limits reset every five hours and weekly limits reset every seven days. Running models on your own hardware remains unlimited from Ollama's cloud-plan perspective.
+```bash
+# Downloads weights; subsequent inference runs locally.
+ollama run gemma4:e2b "Explain Kubernetes admission control"
 
-Always check the [official pricing page](https://ollama.com/pricing) for current terms.
+# Runs on Ollama infrastructure; requires sign-in, network access and available credits.
+ollama run gemma4:31b-cloud "Explain Kubernetes admission control"
+```
 
-## Free versus paid guidance
+Local models require suitable hardware and a download before offline use. Memory needs vary with quantization, context, and concurrency; download size is not a complete RAM/VRAM requirement.
 
-Ollama model pages classify cloud consumption as **low**, **medium**, **high** or **extra high** usage. These are usage bands, not published plan entitlements.
+## Local versus cloud
 
-### Free plan starting points
+| Choice | Execution and privacy | Cost and operation |
+|---|---|---|
+| Downloaded local tag, e.g. `gemma4:e2b` | Inference runs on your hardware; review integrations and external tools separately | No Ollama Cloud usage charge; hardware, electricity and model license terms still apply |
+| CLI cloud tag, e.g. `gemma4:31b-cloud` | The local Ollama interface sends inference to cloud infrastructure | Sign-in and network required; usage billed against account credits |
+| Direct API ID, e.g. `gemma4:31b` | Your application calls `https://ollama.com/api/chat` | Bearer API key required; no Ollama installation needed |
 
-Ollama currently labels two cloud models as low usage. Medium-usage models can also be useful for evaluation on Free, but they will consume the plan allowance faster.
+**Tag namespaces differ.** For direct cloud requests, copy an identifier from [`https://ollama.com/api/tags`](https://ollama.com/api/tags). Use the catalog's separately verified CLI tag through local Ollama. Do not mechanically strip `:cloud`: aliases and dated identifiers can differ. For example, the observed direct ID is `deepseek-v4-pro:0813`.
 
-| Model | Usage | Context | Input | Good for |
-|---|---|---:|---|---|
-| [`gpt-oss:20b-cloud`](https://ollama.com/library/gpt-oss) | Low | 128K | Text | Lightweight reasoning, coding and tool use |
-| [`nemotron-3-nano:30b-cloud`](https://ollama.com/library/nemotron-3-nano) | Low | 1M | Text | Efficient agent tasks and very long context |
-| [`gpt-oss:120b-cloud`](https://ollama.com/library/gpt-oss) | Medium | 128K | Text | Stronger reasoning and coding |
-| [`gemma4:cloud`](https://ollama.com/library/gemma4) | Low | 256K | Text, image | Multimodal chat, coding and image analysis |
-| [`qwen3.5:cloud`](https://ollama.com/library/qwen3.5) | Medium | 256K | Text, image | General, multilingual and multimodal work |
-| [`deepseek-v4-flash:cloud`](https://ollama.com/library/deepseek-v4-flash) | Medium | 1M | Text | Long context, reasoning and coding |
-| [`minimax-m2.7:cloud`](https://ollama.com/library/minimax-m2.7) | Medium | 200K | Text | Coding and agent workflows |
-| [`nemotron-3-super:cloud`](https://ollama.com/library/nemotron-3-super) | Medium | 256K | Text | Agentic and multilingual reasoning |
+Ollama says cloud prompts/responses are not used for training; see its [data-handling documentation](https://docs.ollama.com/cloud#data-handling) and [privacy policy](https://ollama.com/privacy). Cloud requests still leave your machine. For local-only operation, the [FAQ](https://docs.ollama.com/faq) documents `OLLAMA_NO_CLOUD=1`; restart Ollama after changing it. Keep the local server on loopback unless you add appropriate network access controls.
 
-> [!NOTE]
-> “Free plan starting point” does not mean unlimited or permanently guaranteed on Free. Confirm access while signed in and watch your account usage.
+## Free versus paid
 
-### Paid-plan recommended
+The live [Ollama pricing page](https://ollama.com/pricing), checked October 14, 2026, advertises token-priced usage credits:
 
-High and extra-high usage models are practical Pro or Max choices for repeated work. A Free account may allow limited evaluation, but this guide does not treat that as guaranteed access.
+| Plan | Subscription | Included monthly usage | Concurrent requests |
+|---|---:|---|---:|
+| Free | $0 | Starter credits; amount not publicly specified | 1 |
+| Pro | $20/month or $200/year | $60 in credits | 3 |
+| Max | $100/month | $300 in credits | 10 |
+| Team (early access) | From $500/month | $1,000 shared credits | 10 |
 
-| Model | Usage | Context | Input | Good for |
-|---|---|---:|---|---|
-| [`glm-5.2:cloud`](https://ollama.com/library/glm-5.2) | High | 976K | Text | Long-horizon engineering and large repositories |
-| [`glm-5.1:cloud`](https://ollama.com/library/glm-5.1) | High | 198K | Text | Agentic engineering and coding |
-| [`mistral-large-3:675b-cloud`](https://ollama.com/library/mistral-large-3) | High | 256K | Text, image | Multilingual and multimodal production tasks |
-| [`minimax-m3:cloud`](https://ollama.com/library/minimax-m3) | High | 512K | Text, image | Coding, agents and long multimodal context |
-| [`kimi-k2.7-code:cloud`](https://ollama.com/library/kimi-k2.7-code) | High | 256K | Text, image | Long-horizon coding and tool use |
-| [`kimi-k2.6:cloud`](https://ollama.com/library/kimi-k2.6) | High | 256K | Text, image | Coding, design and agent orchestration |
-| [`kimi-k3:cloud`](https://ollama.com/library/kimi-k3) | Extra High | 1M | Text, image | Native multimodal agentic model for long-horizon coding, knowledge work, and reasoning |
-| [`nemotron-3-ultra:cloud`](https://ollama.com/library/nemotron-3-ultra) | High | 256K | Text | Long-running, high-throughput agents |
-| [`deepseek-v4-pro:cloud`](https://ollama.com/library/deepseek-v4-pro) | Extra high | 1M | Text | Frontier reasoning and difficult coding tasks |
+Free starter usage applies to a smaller starter set; purchased credits unlock all models. Included credits reset monthly and do not roll over. The page says switching from an existing Pro/Max plan removes the old session/weekly limits; existing subscribers should check their account terms. Queuing is bounded. We do not infer entitlement from a model's relative usage band. Enterprise is custom-priced.
 
-## Current cloud models
+Charges depend on input, cached-input and output tokens. Consult [the generated price table](MODEL_CATALOG.md#published-cloud-prices) and current billing page before spending. Off-peak DeepSeek rates are documented per entry. Local weights do not consume cloud credits.
 
-The [official cloud catalog](https://ollama.com/search?c=cloud) changes frequently. The following active tags were verified on July 12, 2026.
+## Current models
 
-| Usage | Models |
-|---|---|
-| Low | `gpt-oss:20b-cloud`, `nemotron-3-nano:30b-cloud` |
-| Medium | `gpt-oss:120b-cloud`, `gemma4:cloud`, `gemma4:31b-cloud`, `qwen3.5:cloud`, `qwen3.5:397b-cloud`, `deepseek-v4-flash:cloud`, `minimax-m2.5:cloud`, `minimax-m2.7:cloud`, `nemotron-3-super:cloud` |
-| High | `glm-5.1:cloud`, `glm-5.2:cloud`, `mistral-large-3:675b-cloud`, `minimax-m3:cloud`, `kimi-k2.5:cloud`, `kimi-k2.6:cloud`, `kimi-k2.7-code:cloud`, `nemotron-3-ultra:cloud` |
-| Extra high | `deepseek-v4-pro:cloud` |
+This block is generated from [`data/models.json`](data/models.json). Context labels describe the published tag, not a tested effective limit. See [source disagreements](AUDIT.md#source-disagreements) before planning large requests. Unknown local availability is shown explicitly. Public listing presence does not prove access for every account.
 
-Models with a published retirement date are listed separately below instead of being recommended as current defaults.
+<!-- BEGIN GENERATED CATALOG -->
+
+| Model / direct Cloud API ID | CLI cloud tag | Verified local tag | Context label | Input | Tools / thinking |
+|---|---|---|---|---|---|
+| `deepseek-v4-pro:0813` | `deepseek-v4-pro:0813-cloud` | Not verified | 1M | text | Yes / Yes |
+| `deepseek-v4.1-flash` | `deepseek-v4.1-flash:cloud` | Not verified | 1M | text, image | Yes / Yes |
+| `gemma4:31b` | `gemma4:31b-cloud` | `gemma4:31b` | 256K | text, image | Yes / Yes |
+| Gemma 4 E2B (local only) | Not verified | `gemma4:e2b` | 128K | text, image | Yes / Yes |
+| `glm-5.2` | `glm-5.2:cloud` | Not verified | 976K | text | Yes / Yes |
+| `glm-5.3` | `glm-5.3:cloud` | Not verified | 1M | text | Yes / Yes |
+| `glm-5.3-flash` | `glm-5.3-flash:cloud` | Not verified | 1M | text, image | Yes / Yes |
+| `gpt-oss:120b` | `gpt-oss:120b-cloud` | `gpt-oss:120b` | 128K | text | Yes / Yes |
+| `gpt-oss:20b` | `gpt-oss:20b-cloud` | `gpt-oss:20b` | 128K | text | Yes / Yes |
+| `kimi-k2.6` | `kimi-k2.6:cloud` | Not verified | 256K | text, image | Yes / Yes |
+| `kimi-k2.7-code` | `kimi-k2.7-code:cloud` | Not verified | 256K | text, image | Yes / Yes |
+| `kimi-k3` | `kimi-k3:cloud` | Not verified | 1M | text, image | Yes / Yes |
+| `minimax-m2.7` | `minimax-m2.7:cloud` | Not verified | 200K | text | Yes / Yes |
+| `minimax-m3` | `minimax-m3:cloud` | Not verified | 512K | text, image | Yes / Yes |
+| `mistral-large-3:675b` | `mistral-large-3:675b-cloud` | Not verified | 256K | text, image | Yes / No |
+| `mistral-large-4` | `mistral-large-4:cloud` | Not verified | 1M | text, image | Yes / Yes |
+| `nemotron-3-nano:30b` | `nemotron-3-nano:30b-cloud` | `nemotron-3-nano:30b` | 1M | text | Yes / Yes |
+| `nemotron-3-super` | `nemotron-3-super:cloud` | `nemotron-3-super:120b` | 256K | text | Yes / Yes |
+| `nemotron-3-ultra` | `nemotron-3-ultra:cloud` | Not verified | 256K | text | Yes / Yes |
+| Qwen 3.5 9B (local only) | Not verified | `qwen3.5:9b` | 256K | text, image | Yes / Yes |
+
+<!-- END GENERATED CATALOG -->
 
 ## Quick decision guide
 
-| Task | Lower-usage choice | Higher-capability choice |
+**Editorial starting points, not benchmark rankings.** Evaluate representative prompts, latency, quality, and cost. Tool support means a model can request tools; your application must implement and authorize their execution.
+
+| Task | Starting points | Selection advice |
 |---|---|---|
-| General work | `qwen3.5:cloud` | `kimi-k2.5:cloud` |
-| Lightweight tasks | `gpt-oss:20b-cloud` | `gpt-oss:120b-cloud` |
-| Coding assistant | `minimax-m2.7:cloud` | `kimi-k2.7-code:cloud` |
-| Deep reasoning | `deepseek-v4-flash:cloud` | `deepseek-v4-pro:cloud` |
-| Long documents | `deepseek-v4-flash:cloud` | `glm-5.2:cloud` |
-| Images and screenshots | `gemma4:cloud` | `minimax-m3:cloud` |
-| Multi-agent automation | `nemotron-3-super:cloud` | `nemotron-3-ultra:cloud` |
+| Everyday chat | Gemma 4 E2B locally; Gemma 4 31B cloud | Start small; use cloud when local hardware is insufficient |
+| Coding assistance | GPT-OSS 20B; MiniMax M2.7 | Test against your unit tests and repository conventions |
+| Complex software engineering | GLM 5.3; Kimi K2.7 Code | Evaluate multi-file fixes and long-running behavior |
+| Agentic tool use | Nemotron 3 Super/Ultra | Bound tool calls, permissions, spending and elapsed time |
+| Repository analysis | GLM 5.3; Kimi K3 | Retrieve relevant files before relying on a large context window |
+| Long documents | DeepSeek V4.1 Flash; Mistral Large 4 | Budget input tokens and verify retrieval accuracy |
+| Reasoning | GPT-OSS 120B; DeepSeek V4 Pro 0813 | Verify answers independently; reasoning modes affect cost/latency |
+| Image analysis | Gemma 4 31B; MiniMax M3 | Test image resolution and document parsing quality |
+| Structured outputs | Local GPT-OSS 20B | Official docs say cloud structured outputs are unsupported; validate local JSON against your schema |
+| Low-cost automation | Nemotron 3 Nano 30B; GPT-OSS 20B | Compare input/output mix using current prices; no free-access assumption |
+| Local/offline use | Gemma 4 E2B; Qwen 3.5 9B | Download first; verify hardware and disable cloud if required |
 
-## Deprecations
+Structured-output limitation: [official documentation](https://docs.ollama.com/capabilities/structured-outputs). Recommendations are maintained prose; regeneration changes only the marked comparison block.
 
-Ollama occasionally retires cloud models. Retirement does not remove an independently available local model.
+## Engineering workflows
 
-### Already retired
+Use these as review prompts with an appropriate model. Output is a draft to test, not authority to deploy:
 
-| Retired cloud model | Retirement date | Recommended replacement |
+| Area | Example prompt | Verification |
 |---|---|---|
-| `kimi-k2-thinking:cloud` | June 16, 2026 | `kimi-k2.6:cloud` |
-| `kimi-k2:1t-cloud` | June 16, 2026 | `kimi-k2.6:cloud` |
-| `minimax-m2:cloud` | June 16, 2026 | `minimax-m3:cloud` |
-| `glm-4.6:cloud` | June 16, 2026 | `glm-5.1:cloud` |
-| `qwen3-next:80b-cloud` | June 16, 2026 | `qwen3.5:cloud` |
-| `qwen3-vl:235b-cloud` | June 16, 2026 | `qwen3.5:cloud` |
-| `qwen3-vl:235b-instruct-cloud` | June 16, 2026 | `qwen3.5:cloud` |
-| `cogito-2.1:671b-cloud` | June 16, 2026 | `deepseek-v4-flash:cloud` |
-| `rnj-1:8b-cloud` | June 30, 2026 | None listed |
-| `minimax-m2.5:cloud` | July 31, 2026 | `minimax-m2.7:cloud` |
-| `kimi-k2.5:cloud` | July 31, 2026 | `kimi-k2.6:cloud` |
+| Python / JavaScript | “Review this function, propose a minimal patch, and explain its failure cases.” | Unit tests, linting, dependency review |
+| PowerShell | “Make this script idempotent and add a dry-run option.” | Disposable directory and representative filenames |
+| Kubernetes / DevOps | “Explain this manifest and propose resource requests and health probes.” | Schema validation, diff, staging rollout |
+| GitLab CI/CD | “Simplify this pipeline while preserving protected deployment rules.” | GitLab CI lint and a test pipeline |
+| YAML / Infrastructure as Code | “Generate a minimal configuration from these requirements.” | Parse it, run the provider's validator and review the plan |
+| Code review | “Find behavior changes in this diff and missing regression coverage.” | Reproduce each finding |
+| Local agents | “Analyze these approved files using read-only tools.” | Sandbox paths; approve state changes and external transmission |
 
-### Scheduled for retirement July 15, 2026
+Remove secrets and private data before sending material to cloud models. Keep agent credentials separate from prompts.
 
-Do not use these tags for new integrations.
+## API examples
 
-| Retiring cloud model | Recommended replacement |
-|---|---|
-| `deepseek-v3.1:671b-cloud` | `deepseek-v4-flash:cloud` |
-| `deepseek-v3.2:cloud` | `deepseek-v4-flash:cloud` |
-| `devstral-2:123b-cloud` | `mistral-large-3:675b-cloud` |
-| `devstral-small-2:24b-cloud` | None listed |
-| `ministral-3:3b-cloud` | None listed |
-| `ministral-3:8b-cloud` | None listed |
-| `ministral-3:14b-cloud` | None listed |
-| `gemini-3-flash-preview:cloud` | `minimax-m3:cloud` |
-| `gemma3:4b-cloud`, `gemma3:12b-cloud`, `gemma3:27b-cloud` | `gemma4:31b-cloud` |
-| `glm-4.7:cloud`, `glm-5:cloud` | `glm-5.2:cloud` |
-| `minimax-m2.1:cloud` | `minimax-m3:cloud` |
-| `qwen3-coder-next:cloud`, `qwen3-coder:480b-cloud` | `qwen3.5:397b-cloud` |
-
-Check the [official cloud deprecations](https://docs.ollama.com/cloud#deprecations) before merging model changes.
-
-## Setup
-
-Install [Ollama](https://ollama.com/download), then sign in for cloud access:
-
-```bash
-ollama signin
-```
-
-Run a cloud model:
-
-```bash
-ollama run qwen3.5:cloud "Explain Kubernetes admission control"
-```
-
-Run a local model without consuming cloud usage:
-
-```bash
-ollama run qwen3.5:9b "Format this JSON"
-```
-
-## API access
-
-Use a cloud tag through the local Ollama endpoint:
+These Bash examples use curl with connection and total timeouts. Run local inference after installing Ollama and downloading `gemma4:e2b`:
 
 ```bash
 curl --fail-with-body --silent --show-error \
-  --connect-timeout 10 \
-  --max-time 120 \
+  --connect-timeout 10 --max-time 120 \
   http://localhost:11434/api/chat \
   -H 'Content-Type: application/json' \
-  -d '{
-    "model": "qwen3.5:cloud",
-    "messages": [{"role": "user", "content": "Explain Kubernetes admission control"}],
-    "stream": false
-  }'
+  -d '{"model":"gemma4:e2b","messages":[{"role":"user","content":"Explain Kubernetes admission control"}],"stream":false}'
 ```
 
-The direct Ollama Cloud API uses the exact model names returned by `/api/tags`. These names do not use the local `:cloud` suffix and may include a size tag. Create an API key in your Ollama account, then:
+To route through your signed-in local server to cloud, replace the model with `gemma4:31b-cloud`. A cloud suffix changes where inference executes, even when the HTTP endpoint is localhost.
+
+For direct cloud access, create an [Ollama API key](https://ollama.com/settings/keys) and supply it through your environment or secret manager. This reads it without echoing it or putting its value in shell history:
 
 ```bash
+read -r -s -p 'Ollama API key: ' OLLAMA_API_KEY; printf '\n'
+export OLLAMA_API_KEY
+: "${OLLAMA_API_KEY:?Set OLLAMA_API_KEY first}"
 curl --fail-with-body --silent --show-error \
-  --connect-timeout 10 \
-  --max-time 120 \
+  --connect-timeout 10 --max-time 120 \
   https://ollama.com/api/chat \
   -H "Authorization: Bearer ${OLLAMA_API_KEY}" \
   -H 'Content-Type: application/json' \
-  -d '{
-    "model": "gpt-oss:120b",
-    "messages": [{"role": "user", "content": "Explain Kubernetes admission control"}],
-    "stream": false
-  }'
+  -d '{"model":"gemma4:31b","messages":[{"role":"user","content":"Explain Kubernetes admission control"}],"stream":false}'
 ```
 
-List models currently exposed by the direct cloud API:
+In PowerShell 7, use a secret-store-provided `$env:OLLAMA_API_KEY`:
+
+```powershell
+if (-not $env:OLLAMA_API_KEY) { throw 'Set OLLAMA_API_KEY from your secret store first' }
+$requestBody = @{
+    model = 'gemma4:31b'
+    messages = @(@{ role = 'user'; content = 'Explain Kubernetes admission control' })
+    stream = $false
+} | ConvertTo-Json -Depth 5
+Invoke-RestMethod -Method Post -Uri 'https://ollama.com/api/chat' `
+    -Headers @{ Authorization = "Bearer $env:OLLAMA_API_KEY" } `
+    -ContentType 'application/json' -Body $requestBody -TimeoutSec 120
+```
+
+Public model discovery requires no API key:
 
 ```bash
-curl --fail-with-body --silent --show-error https://ollama.com/api/tags
+curl --fail-with-body --silent --show-error \
+  --connect-timeout 10 --max-time 30 https://ollama.com/api/tags
 ```
 
-See the [official cloud API documentation](https://docs.ollama.com/cloud#cloud-api-access) for current authentication and tag conventions.
+See [API base URLs and authentication](https://docs.ollama.com/api/introduction). Examples were checked against the docs; paid inference was not executed in this audit. Avoid verbose HTTP tracing with credentials.
 
 ## Integrations
 
-Cloud models use the same Ollama interfaces as local models.
+The existing references remain useful. Configure each tool for the intended endpoint/model and check its own authentication and feature support:
 
-| Tool | Purpose | Link |
+| Tool | Purpose | Reference |
 |---|---|---|
-| Open WebUI | Browser chat interface | [github.com/open-webui/open-webui](https://github.com/open-webui/open-webui) |
-| Continue | VS Code and JetBrains assistant | [continue.dev](https://continue.dev) |
-| LangChain | LLM application framework | [python.langchain.com](https://python.langchain.com) |
-| LlamaIndex | RAG and data framework | [llamaindex.ai](https://llamaindex.ai) |
-| Aider | Terminal coding assistant | [aider.chat](https://aider.chat) |
-| ollama-model-router | Route prompts among Ollama models | [github.com/RedBeret/ollama-model-router](https://github.com/RedBeret/ollama-model-router) |
+| Open WebUI | Browser chat interface | [Project](https://github.com/open-webui/open-webui) |
+| Continue | Editor assistant | [Project](https://continue.dev) |
+| Aider | Terminal coding assistant | [Project](https://aider.chat) |
+| LangChain | Application framework | [Project](https://python.langchain.com) |
+| LlamaIndex | Retrieval and data framework | [Project](https://llamaindex.ai) |
+| ollama-model-router | Related routing project | [RedBeret/ollama-model-router](https://github.com/RedBeret/ollama-model-router) |
 
-## Reliability guidance
+## Production reliability
 
-- Do not hard-code a cloud model without a fallback.
-- Prefer active models over tags with a published retirement date.
-- Treat HTTP 401 and 403 as authentication or access failures.
-- Treat HTTP 429 as a rate-limit response and honor `Retry-After` when present.
-- Retry transient 5xx failures with capped exponential backoff.
-- Set connection and response timeouts.
-- Keep a local fallback when privacy, availability or cost is critical.
-- Do not log API keys or sensitive prompts.
+- Treat 401/403 as credential/access failures; fix configuration instead of retrying indefinitely. A listing is not an entitlement check.
+- Treat 404 or a missing model as a reason to inspect tags, aliases and lifecycle notices. Absence alone does not prove retirement.
+- Honor `Retry-After` on 429 where present; cap delay, attempts and job time. Reduce concurrency when queues fill.
+- Retry transient 5xx/network failures with capped exponential backoff and jitter. Inference retries can duplicate work or spend credits; retry tool side effects only when idempotent.
+- Bound connections and response waits. Fallback needs explicit cost, quality and privacy rules. Do not silently send local-only private prompts to cloud.
+- Pre-download and test a local fallback. An editorial example is `gemma4:31b-cloud` → `gpt-oss:20b-cloud` → `gemma4:e2b` (local); evaluate each independently.
+- Keep keys in a secret manager or environment. Avoid logging keys, prompts, full responses or tool credentials.
+- Inspect streaming error objects as well as HTTP status: a mid-stream error can leave the status unchanged. [API errors](https://docs.ollama.com/api/errors).
 
-Example fallback order:
+## Maintaining the catalog
 
-```text
-qwen3.5:cloud
-  -> gpt-oss:20b-cloud
-  -> qwen3.5:9b (local)
+Python **3.12+**, standard library only:
+
+```bash
+python scripts/catalog.py validate
+python scripts/catalog.py generate
+python scripts/catalog.py generate --check
+python -m unittest discover -s tests -v
+python -m compileall -q scripts tests
+git diff --check
 ```
 
-## FAQ
+The small issue-maintenance script uses Node's standard library and is tested with `node --test tests/test_drift_issue.cjs` (Node 22+). GitHub-hosted runners supply Node; catalog editing needs no Node installation.
 
-### Are Ollama cloud models free?
+Validation runs offline on PRs and selected pushes. Weekly drift polling uses separate 10-second connection and 30-second response timeouts, at most three attempts, capped backoff and a 2 MiB response limit. It reports identifier changes, maintains one bot-owned issue, leaves unchanged drift quiet, and closes its issue once resolved. A network/schema failure fails the job without publishing a disappearance report. It never edits catalog data or merges changes.
 
-Ollama has a Free cloud plan with light usage. Pro and Max provide more usage and concurrency. Pro also advertises access to larger, more powerful cloud models. It is no longer accurate to call every cloud model universally free.
+Scheduled monitoring starts only after the workflow reaches the default branch. Manual runs also require that branch. [Contributing](CONTRIBUTING.md) explains verification, [lifecycle policy](docs/LIFECYCLE.md) covers retired tags, and [security review](SECURITY_REVIEW.md) records safeguards and limitations.
 
-### Which exact models are on the Free tier?
+## Sources and verification
 
-Ollama does not publish a stable per-model entitlement matrix. Start with low-usage models, use medium-usage models cautiously and confirm access while signed in. The usage bands in this guide describe relative compute consumption, not guaranteed plan eligibility.
-
-### Are local models free?
-
-Running public models on your own hardware does not consume Ollama Cloud usage. Your hardware, electricity and infrastructure costs still apply.
-
-### What are the rate limits?
-
-Ollama publishes session and weekly usage limits rather than a fixed requests-per-minute allowance. Concurrency is one cloud model on Free, three on Pro and ten on Max.
-
-### Can cloud models run offline?
-
-No. Use a local model tag for offline operation.
-
-## Sources
-
-- [Ollama pricing](https://ollama.com/pricing)
-- [Ollama Cloud documentation](https://docs.ollama.com/cloud)
-- [Ollama cloud model catalog](https://ollama.com/search?c=cloud)
-- Individual Ollama model pages linked above
-
-## Contributing
-
-Before adding or changing a cloud model:
-
-1. Confirm it appears in the official cloud catalog.
-2. Confirm the exact tag, context, input types and usage level on its model page.
-3. Check the cloud deprecations list.
-4. Avoid unsupported benchmark, latency, price or rate-limit claims.
-5. Include the verification date in the pull request.
-
-Suggested row format:
-
-```markdown
-| model-tag | usage | context | input | good for |
-```
+The [audit](AUDIT.md) maps corrections to official sources. Each entry includes source URLs, verification date and documented uses. JSON is the maintained source; `MODEL_CATALOG.md` and the marked README block are generated. Prices, plan terms and editorial recommendations need manual review; drift monitoring checks identifiers only.
 
 ## License
 
-[MIT](LICENSE)
+[MIT](LICENSE). This repository's license does not replace model licenses or cloud service terms.
