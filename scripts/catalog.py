@@ -363,6 +363,11 @@ def main(argv=None):
     drift.add_argument("--output-dir", type=Path, default=ROOT / "reports")
     args = parser.parse_args(argv)
     try:
+        if args.command == "drift":
+            # Invalid local data is also an error: clear stale reports before validation.
+            args.output_dir.mkdir(parents=True, exist_ok=True)
+            for name in ("drift.json", "drift.md"):
+                (args.output_dir / name).unlink(missing_ok=True)
         data = load_catalog(args.catalog)
         if args.command == "validate":
             print(f"Catalog valid: {len(data['models'])} entries; verified {data['verified_on']}")
@@ -370,10 +375,6 @@ def main(argv=None):
             generate(data, ROOT, args.check)
             print("Generated documentation is current" if args.check else "Generated README.md catalog block and MODEL_CATALOG.md")
         else:
-            # Remove previous results first: a failed poll must never publish stale drift.
-            args.output_dir.mkdir(parents=True, exist_ok=True)
-            for name in ("drift.json", "drift.md"):
-                (args.output_dir / name).unlink(missing_ok=True)
             changes = compare(data, fetch_live())
             (args.output_dir / "drift.json").write_text(json.dumps(changes, indent=2) + "\n", encoding="utf-8", newline="\n")
             (args.output_dir / "drift.md").write_text(drift_report(changes), encoding="utf-8", newline="\n")

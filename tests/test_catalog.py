@@ -177,6 +177,16 @@ class CatalogTests(unittest.TestCase):
                 self.assertEqual(c.main(["drift", "--output-dir", directory]), 1)
             self.assertEqual(list(output.iterdir()), [])
 
+    def test_invalid_local_catalog_also_removes_stale_reports(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); output = root / "reports"; output.mkdir()
+            for name in ("drift.json", "drift.md"): (output / name).write_text("stale")
+            bad = root / "bad.json"; bad.write_text("{}")
+            with patch("sys.stderr", new_callable=io.StringIO), patch.object(c, "fetch_live") as fetch:
+                self.assertEqual(c.main(["--catalog", str(bad), "drift", "--output-dir", str(output)]), 1)
+                fetch.assert_not_called()
+            self.assertEqual(list(output.iterdir()), [])
+
 
 class NetworkTests(unittest.TestCase):
     def response(self, status=200, body=b'{"models":[{"name":"a"}]}', retry=None):

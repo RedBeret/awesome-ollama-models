@@ -16,7 +16,7 @@ No confirmed high/critical vulnerability remained after the local review and reg
 - Validation has `contents: read` only, and runs no PR secrets or `pull_request_target` code. Monitoring has only `contents: read` plus `issues: write`, runs reviewed default-branch code, and uses GitHub's short-lived job token.
 - Official actions are pinned to full upstream commit SHAs, with monthly Dependabot proposals. No Python runtime dependency chain was introduced. The small issue script uses Node built-ins and the pinned GitHub action client.
 - Identifier validation prevents report text from becoming arbitrary Markdown/mentions. Report size and digest are checked before GitHub writes. Reports are read from files, not interpolated into shell commands or expressions.
-- Workflow concurrency serializes monitoring runs. Only the exact bot-owned marker/title issue is maintained; unchanged changes cause no write, resolved drift closes it, and multiple matching issues fail for human cleanup. A process failure after GitHub accepts issue creation can be reconciled by the next run's lookup.
+- Workflow concurrency serializes monitoring runs. Only the exact bot-owned marker/title issue is maintained; unchanged changes cause no write, resolved drift closes it, and multiple matching issues fail for human cleanup. GitHub mutations are not automatically retried because issue creation is not idempotent. An uncertain creation failure is reconciled by the next run's lookup.
 - Inference examples use timeouts and document auth/rate errors, idempotency, cloud privacy and fallback rules. Running local inference is not permission to expose a local server publicly.
 
 ## Residual limitations
