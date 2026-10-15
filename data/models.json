@@ -1,0 +1,695 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-10-14",
+  "models": [
+    {
+      "id": "deepseek-v4-pro:0813",
+      "display_name": "DeepSeek V4 Pro 0813",
+      "provider": "DeepSeek",
+      "family": "deepseek-v4-pro",
+      "cloud_api_tag": "deepseek-v4-pro:0813",
+      "cli_cloud_tag": "deepseek-v4-pro:0813-cloud",
+      "local_tag": null,
+      "context_window": "1M",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/deepseek-v4-pro",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "reasoning",
+        "tool use"
+      ],
+      "notes": "The public API lists the dated 0813 identifier; the family page also shows an undated alias. Direct API clients should use the observed identifier.",
+      "pricing": {
+        "usd_per_million_input": 1.32,
+        "usd_per_million_cached_input": 0.044,
+        "usd_per_million_output": 3.96,
+        "source": "https://ollama.com/library/deepseek-v4-pro",
+        "verified_on": "2026-10-14",
+        "notes": "Peak rates shown. Published off-peak input/cached/output rates: $0.66/$0.022/$1.98 per million tokens; see the official pricing page for timing."
+      }
+    },
+    {
+      "id": "deepseek-v4.1-flash",
+      "display_name": "DeepSeek V4.1 Flash",
+      "provider": "DeepSeek",
+      "family": "deepseek-v4.1-flash",
+      "cloud_api_tag": "deepseek-v4.1-flash",
+      "cli_cloud_tag": "deepseek-v4.1-flash:cloud",
+      "local_tag": null,
+      "context_window": "1M",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/deepseek-v4.1-flash",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "search",
+        "multimodal understanding",
+        "tool use"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.3,
+        "usd_per_million_cached_input": 0.006,
+        "usd_per_million_output": 1.2,
+        "source": "https://ollama.com/library/deepseek-v4.1-flash",
+        "verified_on": "2026-10-14",
+        "notes": "Peak rates shown. Published off-peak input/cached/output rates: $0.15/$0.003/$0.60 per million tokens; see the official pricing page for timing."
+      }
+    },
+    {
+      "id": "gemma4:31b",
+      "display_name": "Gemma 4 31B",
+      "provider": "Google DeepMind",
+      "family": "gemma4",
+      "cloud_api_tag": "gemma4:31b",
+      "cli_cloud_tag": "gemma4:31b-cloud",
+      "local_tag": "gemma4:31b",
+      "context_window": "256K",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/gemma4",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "image understanding",
+        "coding",
+        "reasoning"
+      ],
+      "notes": "The 31B cloud tag documents text and image input. Audio capability on smaller Gemma variants is not attributed to this cloud tag.",
+      "pricing": {
+        "usd_per_million_input": 0.14,
+        "usd_per_million_cached_input": 0.05,
+        "usd_per_million_output": 0.4,
+        "source": "https://ollama.com/pricing",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "gemma4:e2b",
+      "display_name": "Gemma 4 E2B",
+      "provider": "Google DeepMind",
+      "family": "gemma4",
+      "cloud_api_tag": null,
+      "cli_cloud_tag": null,
+      "local_tag": "gemma4:e2b",
+      "context_window": "128K",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/gemma4"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "local applications",
+        "image understanding",
+        "reasoning"
+      ],
+      "notes": "Local Ollama text/image tag verified. Cloud availability and additional input modalities are not claimed for this exact tag.",
+      "pricing": null
+    },
+    {
+      "id": "glm-5.2",
+      "display_name": "GLM 5.2",
+      "provider": "Z.ai",
+      "family": "glm-5.2",
+      "cloud_api_tag": "glm-5.2",
+      "cli_cloud_tag": "glm-5.2:cloud",
+      "local_tag": null,
+      "context_window": "976K",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/glm-5.2",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "long-horizon engineering",
+        "coding",
+        "tool use"
+      ],
+      "notes": "Tag page: 976K; search card: 1M. The catalog preserves the tag-specific label, not an inferred exact token count.",
+      "pricing": {
+        "usd_per_million_input": 1.4,
+        "usd_per_million_cached_input": 0.26,
+        "usd_per_million_output": 4.4,
+        "source": "https://ollama.com/library/glm-5.2",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "glm-5.3",
+      "display_name": "GLM 5.3",
+      "provider": "Z.ai",
+      "family": "glm-5.3",
+      "cloud_api_tag": "glm-5.3",
+      "cli_cloud_tag": "glm-5.3:cloud",
+      "local_tag": null,
+      "context_window": "1M",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/glm-5.3",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "coding",
+        "long-horizon agents",
+        "reasoning"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 1.4,
+        "usd_per_million_cached_input": 0.26,
+        "usd_per_million_output": 4.4,
+        "source": "https://ollama.com/library/glm-5.3",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "glm-5.3-flash",
+      "display_name": "GLM 5.3 Flash",
+      "provider": "Z.ai",
+      "family": "glm-5.3-flash",
+      "cloud_api_tag": "glm-5.3-flash",
+      "cli_cloud_tag": "glm-5.3-flash:cloud",
+      "local_tag": null,
+      "context_window": "1M",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/glm-5.3-flash",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "coding",
+        "agents",
+        "multimodal understanding"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.15,
+        "usd_per_million_cached_input": 0.03,
+        "usd_per_million_output": 0.5,
+        "source": "https://ollama.com/library/glm-5.3-flash",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "gpt-oss:120b",
+      "display_name": "GPT-OSS 120B",
+      "provider": "OpenAI",
+      "family": "gpt-oss",
+      "cloud_api_tag": "gpt-oss:120b",
+      "cli_cloud_tag": "gpt-oss:120b-cloud",
+      "local_tag": "gpt-oss:120b",
+      "context_window": "128K",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/gpt-oss",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "reasoning",
+        "tool use",
+        "coding"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.15,
+        "usd_per_million_cached_input": 0.014,
+        "usd_per_million_output": 0.6,
+        "source": "https://ollama.com/pricing",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "gpt-oss:20b",
+      "display_name": "GPT-OSS 20B",
+      "provider": "OpenAI",
+      "family": "gpt-oss",
+      "cloud_api_tag": "gpt-oss:20b",
+      "cli_cloud_tag": "gpt-oss:20b-cloud",
+      "local_tag": "gpt-oss:20b",
+      "context_window": "128K",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/gpt-oss",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "reasoning",
+        "tool use",
+        "coding"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.07,
+        "usd_per_million_cached_input": 0.035,
+        "usd_per_million_output": 0.3,
+        "source": "https://ollama.com/pricing",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "kimi-k2.6",
+      "display_name": "Kimi K2.6",
+      "provider": "Moonshot AI",
+      "family": "kimi-k2.6",
+      "cloud_api_tag": "kimi-k2.6",
+      "cli_cloud_tag": "kimi-k2.6:cloud",
+      "local_tag": null,
+      "context_window": "256K",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/kimi-k2.6",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "coding",
+        "design",
+        "agent orchestration"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.95,
+        "usd_per_million_cached_input": 0.16,
+        "usd_per_million_output": 4,
+        "source": "https://ollama.com/library/kimi-k2.6",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "kimi-k2.7-code",
+      "display_name": "Kimi K2.7 Code",
+      "provider": "Moonshot AI",
+      "family": "kimi-k2.7-code",
+      "cloud_api_tag": "kimi-k2.7-code",
+      "cli_cloud_tag": "kimi-k2.7-code:cloud",
+      "local_tag": null,
+      "context_window": "256K",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/kimi-k2.7-code",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "coding",
+        "long-horizon agents"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.95,
+        "usd_per_million_cached_input": 0.19,
+        "usd_per_million_output": 4,
+        "source": "https://ollama.com/library/kimi-k2.7-code",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "kimi-k3",
+      "display_name": "Kimi K3",
+      "provider": "Moonshot AI",
+      "family": "kimi-k3",
+      "cloud_api_tag": "kimi-k3",
+      "cli_cloud_tag": "kimi-k3:cloud",
+      "local_tag": null,
+      "context_window": "1M",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/kimi-k3",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "coding",
+        "knowledge work",
+        "reasoning"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 3,
+        "usd_per_million_cached_input": 0.3,
+        "usd_per_million_output": 15,
+        "source": "https://ollama.com/library/kimi-k3",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "minimax-m2.7",
+      "display_name": "MiniMax M2.7",
+      "provider": "MiniMax",
+      "family": "minimax-m2.7",
+      "cloud_api_tag": "minimax-m2.7",
+      "cli_cloud_tag": "minimax-m2.7:cloud",
+      "local_tag": null,
+      "context_window": "200K",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/minimax-m2.7",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "coding",
+        "agents",
+        "productivity"
+      ],
+      "notes": "Tag page: 200K; search card: 192K. Verify the effective service limit before relying on the full context.",
+      "pricing": {
+        "usd_per_million_input": 0.3,
+        "usd_per_million_cached_input": 0.06,
+        "usd_per_million_output": 1.2,
+        "source": "https://ollama.com/library/minimax-m2.7",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "minimax-m3",
+      "display_name": "MiniMax M3",
+      "provider": "MiniMax",
+      "family": "minimax-m3",
+      "cloud_api_tag": "minimax-m3",
+      "cli_cloud_tag": "minimax-m3:cloud",
+      "local_tag": null,
+      "context_window": "512K",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/minimax-m3",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "coding",
+        "agents",
+        "multimodal understanding"
+      ],
+      "notes": "Tag page: 512K; search card: 500K; family description advertises up to 1M. The catalog uses the tag-specific label rather than the family maximum.",
+      "pricing": {
+        "usd_per_million_input": 0.6,
+        "usd_per_million_cached_input": 0.12,
+        "usd_per_million_output": 2.4,
+        "source": "https://ollama.com/library/minimax-m3",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "mistral-large-3:675b",
+      "display_name": "Mistral Large 3 675B",
+      "provider": "Mistral AI",
+      "family": "mistral-large-3",
+      "cloud_api_tag": "mistral-large-3:675b",
+      "cli_cloud_tag": "mistral-large-3:675b-cloud",
+      "local_tag": null,
+      "context_window": "256K",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": false,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/mistral-large-3",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "multimodal understanding",
+        "production applications"
+      ],
+      "notes": "A downloadable Ollama local tag was not verified in this audit; open weights alone do not establish local Ollama availability.",
+      "pricing": {
+        "usd_per_million_input": 0.5,
+        "usd_per_million_cached_input": null,
+        "usd_per_million_output": 1.5,
+        "source": "https://ollama.com/library/mistral-large-3",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "mistral-large-4",
+      "display_name": "Mistral Large 4",
+      "provider": "Mistral AI",
+      "family": "mistral-large-4",
+      "cloud_api_tag": "mistral-large-4",
+      "cli_cloud_tag": "mistral-large-4:cloud",
+      "local_tag": null,
+      "context_window": "1M",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/mistral-large-4",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "coding",
+        "agents",
+        "multimodal understanding"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.68,
+        "usd_per_million_cached_input": 0.07,
+        "usd_per_million_output": 2.09,
+        "source": "https://ollama.com/library/mistral-large-4",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "nemotron-3-nano:30b",
+      "display_name": "Nemotron 3 Nano 30B",
+      "provider": "NVIDIA",
+      "family": "nemotron-3-nano",
+      "cloud_api_tag": "nemotron-3-nano:30b",
+      "cli_cloud_tag": "nemotron-3-nano:30b-cloud",
+      "local_tag": "nemotron-3-nano:30b",
+      "context_window": "1M",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/nemotron-3-nano",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "agents",
+        "reasoning"
+      ],
+      "notes": "The 30B cloud tag page shows 1M; the family search card shows 256K and also describes a 4B variant. Do not transfer one variant's context limit to another.",
+      "pricing": {
+        "usd_per_million_input": 0.06,
+        "usd_per_million_cached_input": null,
+        "usd_per_million_output": 0.24,
+        "source": "https://ollama.com/pricing",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "nemotron-3-super",
+      "display_name": "Nemotron 3 Super",
+      "provider": "NVIDIA",
+      "family": "nemotron-3-super",
+      "cloud_api_tag": "nemotron-3-super",
+      "cli_cloud_tag": "nemotron-3-super:cloud",
+      "local_tag": "nemotron-3-super:120b",
+      "context_window": "256K",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/nemotron-3-super",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "agents",
+        "reasoning"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.015,
+        "usd_per_million_cached_input": 0.015,
+        "usd_per_million_output": 0.6,
+        "source": "https://ollama.com/pricing",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "nemotron-3-ultra",
+      "display_name": "Nemotron 3 Ultra",
+      "provider": "NVIDIA",
+      "family": "nemotron-3-ultra",
+      "cloud_api_tag": "nemotron-3-ultra",
+      "cli_cloud_tag": "nemotron-3-ultra:cloud",
+      "local_tag": null,
+      "context_window": "256K",
+      "modalities": [
+        "text"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/nemotron-3-ultra",
+        "https://ollama.com/api/tags"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "long-running agents",
+        "tool use",
+        "reasoning"
+      ],
+      "notes": null,
+      "pricing": {
+        "usd_per_million_input": 0.1,
+        "usd_per_million_cached_input": 0.1,
+        "usd_per_million_output": 3,
+        "source": "https://ollama.com/library/nemotron-3-ultra",
+        "verified_on": "2026-10-14",
+        "notes": null
+      }
+    },
+    {
+      "id": "qwen3.5:9b",
+      "display_name": "Qwen 3.5 9B",
+      "provider": "Qwen / Alibaba",
+      "family": "qwen3.5",
+      "cloud_api_tag": null,
+      "cli_cloud_tag": null,
+      "local_tag": "qwen3.5:9b",
+      "context_window": "256K",
+      "modalities": [
+        "text",
+        "image"
+      ],
+      "tools": true,
+      "thinking": true,
+      "status": "active",
+      "sources": [
+        "https://ollama.com/library/qwen3.5"
+      ],
+      "verified_on": "2026-10-14",
+      "use_cases": [
+        "multimodal understanding",
+        "agents"
+      ],
+      "notes": "Local Ollama text/image tag verified. Cloud availability and additional input modalities are not claimed for this exact tag.",
+      "pricing": null
+    }
+  ]
+}

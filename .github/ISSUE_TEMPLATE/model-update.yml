@@ -1,0 +1,24 @@
+name: Model addition or correction
+description: Propose a sourced model, pricing, or lifecycle update.
+body:
+  - type: input
+    id: identifier
+    attributes:
+      label: Exact model identifier
+      description: Specify direct API and CLI tags separately where relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Official sources and verification date
+      description: Link Ollama tag pages, API listing, pricing, or documented retirement notices.
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed change and uncertainty
+      description: Include source disagreements. A missing API tag alone does not prove retirement.
+    validations:
+      required: true

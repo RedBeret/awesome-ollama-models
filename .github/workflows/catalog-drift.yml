@@ -1,0 +1,38 @@
+name: Cloud catalog drift
+on:
+  schedule:
+    - cron: '23 9 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+# Serialize scheduled and manual runs to avoid duplicate issue creation.
+concurrency:
+  group: ollama-cloud-catalog-drift
+  cancel-in-progress: false
+jobs:
+  monitor:
+    # Manual execution is restricted to the default branch's reviewed code.
+    if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Fetch and compare the public catalog
+        run: python scripts/catalog.py drift
+      - name: Publish report to run summary
+        shell: bash
+        run: cat reports/drift.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Maintain one drift issue
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        with:
+          retries: 2
+          script: |
+            await require('./.github/scripts/drift-issue.cjs')({ github, context, core });

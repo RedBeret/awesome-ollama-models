@@ -1,0 +1,16 @@
+name: Catalog tooling bug
+description: Report validation, generation, or monitoring failures.
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps and expected result
+      description: Include Python version and command. Remove API keys and private prompts.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+    validations:
+      required: true

@@ -16,3 +16,9 @@
 tmp/
 *.tmp
 *.log
+
+# Python and generated monitoring output
+__pycache__/
+*.py[cod]
+.venv/
+reports/
