@@ -187,6 +187,7 @@ The existing references remain useful. Configure each tool for the intended endp
 | Tool | Purpose | Reference |
 |---|---|---|
 | Open WebUI | Browser chat interface | [Project](https://github.com/open-webui/open-webui) |
+| Quock | iPhone chat client for Ollama Cloud models (sign in with ollama.com) | [matteocelani/quock](https://github.com/matteocelani/quock) |
 | Continue | Editor assistant | [Project](https://continue.dev) |
 | Aider | Terminal coding assistant | [Project](https://aider.chat) |
 | LangChain | Application framework | [Project](https://python.langchain.com) |
